@@ -1,0 +1,39 @@
+# Continuous integration for linting (pre-commit) and tests
+name: CI
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+
+jobs:
+  lint-and-test:
+    # Run on Ubuntu runners to keep workflow portable
+    runs-on: ubuntu-latest
+    steps:
+      # Fetch the repository contents
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      # Install Python 3.11 so the environment matches local usage
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # Install app/runtime deps plus pre-commit hooks
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas streamlit pre-commit
+
+      # Run the configured linting/type-check hooks (Black, Flake8, mypy)
+      - name: Run pre-commit
+        run: |
+          pre-commit install --install-hooks
+          pre-commit run --all-files
+
+      # Execute the unittest suite covering SQL parser/generator behavior
+      - name: Run tests
+        run: |
+          python -m unittest discover -s tests -p 'test*.py' -v
