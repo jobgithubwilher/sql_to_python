@@ -1,9 +1,10 @@
-# TechTestDataiku — SQL → pandas proof-of-concept
+# SQL → pandas 
 
-**Candidate:** Willie Hernandez
-**Email:** williehernandezr@gmail.com
+- **Candidate:** Willie Hernandez
 
-TechTestDataiku is a proof-of-concept tool that translates both **standard SQL queries** and **SAS PROC SQL snippets** into **readable pandas code**.
+- **Email:** williehernandezr@gmail.com
+
+A proof-of-concept tool that translates both **standard SQL queries** and **SAS PROC SQL snippets** into **readable pandas code**.
 
 ## Supported (PoC)
 - `SELECT` (basic projections and `AS` aliases)
@@ -21,7 +22,7 @@ TechTestDataiku is a proof-of-concept tool that translates both **standard SQL q
 # 1. Install uv if you don't have it yet
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# 2. Create a virtual environment (Python 3.10+ recommended)
+# 2. Create a virtual environment 
 uv venv
 source .venv/bin/activate  # or .venv\Scripts\activate on Windows
 
@@ -53,6 +54,9 @@ Open the local URL printed in your terminal. Choose one of the editors and click
 - Compare row counts between original SQL and pandas outputs.
 - Compare sums or key metrics by group.
 - Spot-check a few rows.
+
+## Walkthroughs
+- Interactive tour: open `sqlift_walkthrough.ipynb` in Jupyter to run the helper functions step by step.
 
 ## Tests
 
@@ -100,7 +104,7 @@ The `.github/workflows/ci.yml` workflow runs on every push/PR. It:
 - runs the unittest suite (`python -m unittest discover`).
 
 ## Roadmap
-- **PySpark backend:** add a second code generator so the same parsed SQL can emit idiomatic PySpark transformations (e.g., using `SparkSession.table`, joins, `groupBy().agg`, window functions).  
-- **Broader SQL coverage:** handle more scalar and aggregate functions (e.g., `COALESCE`, `DATE_TRUNC`, `CASE WHEN`, arithmetic/date math) along with vendor-specific expressions.  
-- **Dialect-awareness:** allow users to choose hints like PostgreSQL vs. Snowflake vs. SAS PROC SQL to tune quoting rules, boolean operators, and identifier casing.  
-- **Test-driven improvements:** `tests/test_sqlift.py` is the best place to add failing cases and lock in fixes—grow the suite as new functions or edge cases get supported.
+- **Parser maturity:** support nested queries, outer joins, window functions, CASE expressions, arithmetic/date math, and metadata-driven column typing.
+- **Backend flexibility:** add PySpark and SQLAlchemy targets, plus an extensible abstraction for future engines.
+- **Observability & logging:** introduce structured logging, metrics on translation coverage.
+- **Documentation & onboarding:** expand README with architecture overview, troubleshooting tips, and diagrams; include API docs via Sphinx or MkDocs.
